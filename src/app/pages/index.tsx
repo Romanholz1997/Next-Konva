@@ -1,9 +1,10 @@
-'use client'
-import { useState } from "react";
-import Sidebar from "./components/Sidebar"; // Adjusted the import to match the directory
-import Canvas from "./components/Canvas";   // Adjusted the import to match the directory
+// pages/index.tsx
 
-const HomePage: React.FC = () => {
+import { useState } from "react";
+import Sidebar from "../components/Sidebar"; // Adjusted the import to match the directory
+import Canvas from "../components/Canvas";   // Adjusted the import to match the directory
+
+const Home: React.FC = () => {
   const handleDragStart = (
     e: React.DragEvent<HTMLDivElement>,
     shapeType: string
@@ -36,4 +37,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default Home;
