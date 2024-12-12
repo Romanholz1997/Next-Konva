@@ -30,7 +30,12 @@ const HomePage: React.FC = () => {
       />
       <Canvas 
         isDrawRectangle={sharedValue} 
-        handleDrawRectangle={updateValue} 
+        handleDrawRectangle={updateValue}
+        CANVAS_WIDTH={5000} 
+        CANVAS_HEIGHT={5000}
+        rulerHeight={20}
+        rulerWidth={20}
+        background={"background.svg"}
       />
     </div>
   );

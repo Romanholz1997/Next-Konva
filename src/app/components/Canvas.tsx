@@ -59,13 +59,16 @@ interface SelectRectangle {
 interface CanvasProps {  
   isDrawRectangle: boolean;
   handleDrawRectangle: (newValue: boolean) => void;
+  CANVAS_HEIGHT: number;
+  CANVAS_WIDTH: number;
+  rulerWidth: number;
+  rulerHeight: number;
+  background: string;
 }
 
-const CANVAS_WIDTH = 4000;
-const CANVAS_HEIGHT = 4000;
 const GRID_SIZE = 10;
 
-const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) => {
+const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle, CANVAS_HEIGHT, CANVAS_WIDTH, rulerHeight, rulerWidth, background}) => {
   const [shapes, setShapes] = useState<Shape[]>([]);
   const [nextId, setNextId] = useState<number>(1);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -136,7 +139,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
   /////-------background------------------
   const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null);
   useEffect(() => {
-    const imagePath = "./background.svg"; // Replace with your SVG path
+    const imagePath = background; // Replace with your SVG path
     loadBackgroundImage(imagePath);    
   }, []);
   const loadBackgroundImage = (src: string) => {
@@ -214,15 +217,13 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
       }
 
       const shapeType = e.dataTransfer.getData("text/plain") as
-        | "rectangle"
-        | "circle"
-        | "star"
-        | "science"
-        | "text";
+        | "Rect"
+        | "Shape"
+        | "Text";
 
       let newShape: Shape;
       switch (shapeType) {
-        case "rectangle":
+        case "Rect":
           newShape = {
             id: "rectangle_" + nextId,
             type: "rectangle",
@@ -236,38 +237,8 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
             scaleY:1,
             groupId: null
           };
-          break;
-        case "circle":
-          newShape = {
-            id: "circle_" + nextId,
-            type: "circle",
-            x: pointer.x,
-            y: pointer.y,
-            radius: 50,
-            fill: "#ff0000",
-            rotation: 0,
-            scaleX:1,
-            scaleY:1,
-            groupId: null
-          };
-          break;
-        case "star":
-          newShape = {
-            id: "star_" + nextId,
-            type: "star",
-            x: pointer.x,
-            y: pointer.y,
-            numPoints: 5,
-            innerRadius: 30,
-            radius: 50,
-            fill: "#aaaa33",
-            rotation: 0, // Initialize rotation
-            scaleX:1,
-            scaleY:1,
-            groupId: null
-          };
-          break;
-        case "science":
+          break;        
+        case "Shape":
           const img = new Image();
           img.src = "./science.svg"; // Assign the imported SVG string to the image source
           newShape = {
@@ -284,7 +255,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
             groupId: null
           };
           break;  
-        case "text":
+        case "Text":
           newShape = {
             id: "text_" + nextId,
             type: "text",
@@ -1853,7 +1824,11 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
     <div className="container">
       <Ruler
         stagePos={stagePos}
-        stageScale={stageScale}
+        stageScale={stageScale}    
+        CANVAS_HEIGHT={CANVAS_HEIGHT}  
+        CANVAS_WIDTH={CANVAS_HEIGHT}
+        rulerHeight={rulerHeight}
+        rulerWidth={rulerWidth}
       />
       <div
         onDrop={handleDrop}
@@ -1868,7 +1843,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
             <p>Loading...</p>
           </div>
         )}
-        <ToastContainer />
+        {/* <ToastContainer /> */}
         <Stage
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
@@ -1900,35 +1875,11 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
             )}
           </Layer> 
 
-          { gridLine && (
+          {/* Grid { gridLine && (
             <Grid width={CANVAS_WIDTH} height={CANVAS_WIDTH} cellSize={GRID_SIZE} />
-          )}
+          )} */}
 
           <Layer ref={layerRef}  name="shapeLayer">
-            {/* {selectRectangle.map((selectRect) => {
-                // Calculate the adjusted positions based on stagePos and stageScale
-                const adjustedX = (selectRect.x);
-                const adjustedY = (selectRect.y);
-                const adjustedWidth = selectRect.width;
-                const adjustedHeight = selectRect.height;
-
-                // Define the points for the rectangle using Line
-                const points = [
-                    adjustedX, adjustedY, // Top-left
-                    adjustedX + adjustedWidth, adjustedY, // Top-right
-                    adjustedX + adjustedWidth, adjustedY + adjustedHeight, // Bottom-right
-                    adjustedX, adjustedY + adjustedHeight, // Bottom-left
-                    adjustedX, adjustedY // Back to Top-left to close the rectangle
-                ];
-                return (
-                    <Line
-                        points={points}
-                        stroke='blue' // Line color
-                        strokeWidth={2 / stageScale} // Line width
-                        key={Math.random()} // Ensure each Line has a unique key
-                    />
-                );
-            })} */}
             {(() => {
               const groupedShapes = shapes.reduce((acc, shape) => {
                 if (shape.groupId) {
@@ -2361,7 +2312,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
               onTransformEnd={handleTransformEnd} // Attach handler here
             />
           </Layer>  
-          <Layer  name="tooltipLayer">
+          {/*  Tooltip <Layer  name="tooltipLayer">
             {tooltipVisible && (
               <Label x={tooltipX} y={tooltipY}>
                 <Tag
@@ -2385,11 +2336,10 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
                 />
               </Label>
             )}
-          </Layer>
-          <Layer name="crossfairLayer">
+          </Layer> */}
+          {/* Cross Fair <Layer name="crossfairLayer">
             {crossFair && showMouseInfo && (
               <>
-                {/* Display Mouse Coordinates */}
                 <Text
                   x={stagePos.x > 0? (mouseCoords.x) / stageScale + 5 / stageScale: (mouseCoords.x - stagePos.x) / stageScale + 5 / stageScale}
                   y={
@@ -2425,10 +2375,10 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
                 />
               </>
             )}
-          </Layer>
+          </Layer> */}
 
         </Stage>
-        {menuPos && (
+        {/* Right Context {menuPos && (
           <RightContext
             selectedIds={selectedIds}
             menuPosition={menuPos}
@@ -2450,9 +2400,9 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
             handlePaste={handlePaste}
             isCut={isCut}
           />
-        )}
+        )} */}
       </div>
-      {selectedIds.length > 0 && (
+      {/* RightBar {selectedIds.length > 0 && (
         <RightBar 
           handleSave={handleSave}
           handleInputChange={handleInputChange}
@@ -2462,7 +2412,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
           getCommonProperty={getCommonProperty}
           selectedShapeTypes={selectedShapeTypes}
         />          
-      )}
+      )} */}
       <div
         style={{
           position: "absolute",
@@ -2494,7 +2444,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#45a049")} // Darker green on hover
         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#4CAF50")} // Revert back on mouse leave
         onClick={saveAsSVG}
-        >Save as SVG</button>
+        >saveSVG</button>
         <button style={{
           backgroundColor: "#4CAF50", // Green background
           marginLeft: "10px",
@@ -2512,7 +2462,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#45a049")} // Darker green on hover
         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#4CAF50")} // Revert back on mouse leave
         onClick={saveAsJson}
-        >Save as Json</button>
+        >ExportJson</button>
         {/* <label
           style={{
             display: "inline-block",
@@ -2555,7 +2505,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle}) =
           onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#45a049")}
           onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#4CAF50")}
         >
-          Upload Json
+          ImportJson
           <input
             type="file"
             accept=".json"

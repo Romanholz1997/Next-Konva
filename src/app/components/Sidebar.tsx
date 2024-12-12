@@ -44,11 +44,9 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <div style={{ width: "200px", border: "1px solid #bbb", padding: "10px" }}>
-      <DraggableItem shapeType="rectangle" onDragStart={onDragStart} />
-      <DraggableItem shapeType="circle" onDragStart={onDragStart} />
-      <DraggableItem shapeType="star" onDragStart={onDragStart} />
-      <DraggableItem shapeType="science" onDragStart={onDragStart} />
-      <DraggableItem shapeType="text" onDragStart={onDragStart} />
+      <DraggableItem shapeType="Rect" onDragStart={onDragStart} />
+      <DraggableItem shapeType="Text" onDragStart={onDragStart} />
+      <DraggableItem shapeType="Shape" onDragStart={onDragStart} />
       <div     
         style={{
           padding: "10px",
@@ -61,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         }}
         onClick={() => handleDrawRectangle(!isDrawRectangle)}
       >
-        Draw Rectangle
+        Location
       </div>
     </div>
   );

@@ -3,24 +3,31 @@ import { Stage, Layer, Text, Line } from "react-konva";
 import "./custom.css";
 
 const RULER_SIZE = 30;
-const CANVAS_WIDTH = 4000;
-const CANVAS_HEIGHT = 4000;
 
 interface RulerProps {
   stagePos: { x: number; y: number };
   stageScale: number;
+  CANVAS_WIDTH: number;
+  CANVAS_HEIGHT: number;
+  rulerWidth: number;
+  rulerHeight: number;
 }
 
 const Ruler: React.FC<RulerProps> = ({
   stagePos,
   stageScale,
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
+  rulerHeight,
+  rulerWidth
 }) => {
   const renderRulerMarks = (isHorizontal: boolean) => {
     const offset = isHorizontal ? stagePos.x : stagePos.y ;
     // Pixels per unit at the current scale
-    const pixelsPerUnit = stageScale * 10;
+    const pixelsPerUnit = isHorizontal ? stageScale * rulerWidth : stageScale * rulerHeight;
+    const rulerEnd = isHorizontal ? CANVAS_WIDTH / rulerWidth : CANVAS_HEIGHT / rulerHeight;
     const marks = [];   
-    for (let unit = 0; unit <= 400; unit += 1) {
+    for (let unit = 0; unit <= rulerEnd; unit += 1) {
       let position = 0
       if(offset > 0)
       {
