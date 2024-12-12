@@ -1875,9 +1875,9 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle, CA
             )}
           </Layer> 
 
-          {/* Grid { gridLine && (
+          { gridLine && (
             <Grid width={CANVAS_WIDTH} height={CANVAS_WIDTH} cellSize={GRID_SIZE} />
-          )} */}
+          )}
 
           <Layer ref={layerRef}  name="shapeLayer">
             {(() => {
@@ -2312,7 +2312,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle, CA
               onTransformEnd={handleTransformEnd} // Attach handler here
             />
           </Layer>  
-          {/*  Tooltip <Layer  name="tooltipLayer">
+          <Layer  name="tooltipLayer">
             {tooltipVisible && (
               <Label x={tooltipX} y={tooltipY}>
                 <Tag
@@ -2336,8 +2336,8 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle, CA
                 />
               </Label>
             )}
-          </Layer> */}
-          {/* Cross Fair <Layer name="crossfairLayer">
+          </Layer>
+          <Layer name="crossfairLayer">
             {crossFair && showMouseInfo && (
               <>
                 <Text
@@ -2375,10 +2375,10 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle, CA
                 />
               </>
             )}
-          </Layer> */}
+          </Layer>
 
         </Stage>
-        {/* Right Context {menuPos && (
+        {menuPos && (
           <RightContext
             selectedIds={selectedIds}
             menuPosition={menuPos}
@@ -2400,9 +2400,9 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle, CA
             handlePaste={handlePaste}
             isCut={isCut}
           />
-        )} */}
+        )}
       </div>
-      {/* RightBar {selectedIds.length > 0 && (
+      {selectedIds.length > 0 && (
         <RightBar 
           handleSave={handleSave}
           handleInputChange={handleInputChange}
@@ -2412,7 +2412,7 @@ const Canvas: React.FC<CanvasProps> = ({isDrawRectangle, handleDrawRectangle, CA
           getCommonProperty={getCommonProperty}
           selectedShapeTypes={selectedShapeTypes}
         />          
-      )} */}
+      )}
       <div
         style={{
           position: "absolute",
